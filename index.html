@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="mn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Монголын Түүхэн Таавар + Chatbot</title>
+
+<style>
+body{font-family:Arial;background:#f4f4f4;margin:0}
+header{background:#7b3f00;color:#fff;padding:20px;text-align:center}
+.container{max-width:700px;margin:40px auto;background:#fff;padding:20px;border-radius:10px}
+button{padding:10px 20px;background:#7b3f00;color:#fff;border:none;border-radius:5px;cursor:pointer}
+button:hover{background:#5e2f00}
+.chat-container{border:1px solid #ccc;border-radius:10px;margin-top:20px}
+.chat-header{background:#7b3f00;color:#fff;padding:10px;text-align:center}
+#chatbox{height:220px;padding:10px;overflow-y:auto;background:#fafafa}
+.bot{background:#e6e6e6;padding:8px 12px;border-radius:10px;margin:5px 0;max-width:80%}
+.user{background:#7b3f00;color:#fff;padding:8px 12px;border-radius:10px;margin:5px 0 5px auto;max-width:80%}
+.chat-input{display:flex;border-top:1px solid #ccc}
+.chat-input input{flex:1;padding:10px;border:none}
+</style>
+</head>
+
+<body>
+<header><h1>Монголын Түүхэн Таавар</h1></header>
+
+<div class="container">
+<h2 id="question"></h2>
+<input type="text" id="answer" placeholder="Хариугаа бичээд Enter дарж болно" style="width:100%;padding:10px">
+<button onclick="checkAnswer()">Шалгах</button>
+<p id="result"></p>
+<button onclick="newQuestion()">Шинэ таавар</button>
+
+<hr>
+
+<div class="chat-container">
+<div class="chat-header">🤖 AI & Компьютерийн Chatbot</div>
+<div id="chatbox">
+<div class="bot">Сайн байна уу! Асуултаа бичнэ үү 😊</div>
+</div>
+<div class="chat-input">
+<input type="text" id="userInput" placeholder="Энд бичнэ үү...">
+<button onclick="sendMessage()">➤</button>
+</div>
+</div>
+</div>
+
+<script>
+const questionEl = document.getElementById("question");
+const answerEl = document.getElementById("answer");
+const resultEl = document.getElementById("result");
+const chatbox = document.getElementById("chatbox");
+const userInput = document.getElementById("userInput");
+
+const questions = [
+ { q:"Монголын анхны төрт улс аль нь вэ?", a:"Хүннү"},
+ { q:"Их Монгол Улсыг хэн байгуулав?", a:"Чингис хаан"},
+ { q:"Монгол бичгийг хэзээ хэрэглэж эхэлсэн бэ?", a:"13-р зуун"},
+ { q:"Чингис хааны төрсөн он?", a:"1162"},
+ { q:"Монголын нууц товчоо хэдэн бүлэгтэй вэ?", a:"12"},
+ { q:"Хамгийн олон жил төр барьсан хаан хэн бэ?", a:"Батмөнх"},
+ { q:"1911 оны хувьсгалын шалтгаан юу вэ?", a:"Манжийн дарлал, Шинэ засгийн бодлого, үндэсний ухамсар"},
+ { q:"Богд хаант Монгол улс хэзээ байгуулагдсан бэ?", a:"1911 оны 12-р сарын 29"},
+ { q:"Богд хаант улсын төрийн хэлбэр ямар байсан бэ?", a:"Хаант засаг"},
+ { q:"1915 оны Хиагтын гэрээний агуулга юу вэ?", a:"Монголын автономит байдлыг хязгаарласан"},
+ { q:"1921 оны Ардын хувьсгалын удирдагчид хэн бэ?", a:"Д.Сүхбаатар, Х.Чойбалсан, С.Данзан"},
+ { q:"БНМАУ хэзээ тунхаглагдсан бэ?", a:"1924 он"},
+ { q:"Монгол улс НҮБ-д хэзээ элссэн бэ?", a:"1961 он"},
+ { q:"1992 оны Үндсэн хуулийн онцлог юу вэ?", a:"Хүний эрх, ардчилал баталгаажсан"}
+];
+
+let current;
+
+function newQuestion(){
+ current = questions[Math.floor(Math.random()*questions.length)];
+ questionEl.textContent = current.q;
+ answerEl.value="";
+ resultEl.textContent="";
+}
+
+function checkAnswer(){
+ if(answerEl.value.trim()==="") return;
+ if(answerEl.value.trim().toLowerCase() === current.a.toLowerCase()){
+  resultEl.textContent="✔ Зөв!";
+  resultEl.style.color="green";
+ } else {
+  resultEl.textContent="❌ Буруу! Зөв: " + current.a;
+  resultEl.style.color="red";
+ }
+}
+newQuestion();
+
+/* 🤖 Chatbot */
+function sendMessage(){
+ if(userInput.value.trim()==="") return;
+ chatbox.innerHTML += `<div class="user">${userInput.value}</div>`;
+ chatbox.innerHTML += `<div class="bot">Одоогоор зөвхөн түүхийн таавар ажиллаж байна 😊</div>`;
+ chatbox.scrollTop = chatbox.scrollHeight;
+ userInput.value="";
+}
+
+/* ⌨ Enter дарахад шалгах */
+answerEl.addEventListener("keydown", e=>{
+ if(e.key==="Enter") checkAnswer();
+});
+</script>
+</body>
+</html>
